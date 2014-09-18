@@ -10,25 +10,25 @@ OpenVPN server in a Docker container complete with an EasyRSA PKI CA.
 
 * Initalize the `$OVPN_DATA` container that will hold the configuration files and certificates
 
-        docker run --volumes-from $OVPN_DATA --rm kylemanna/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM:1194
-        docker run --volumes-from $OVPN_DATA --rm -it kylemanna/openvpn ovpn_initpki
+        docker run --volumes-from $OVPN_DATA --rm acactown/opvn:v2 ovpn_genconfig -u udp://VPN.SERVERNAME.COM:1194
+        docker run --volumes-from $OVPN_DATA --rm -it acactown/opvn:v2 ovpn_initpki
 
 * Start OpenVPN server process
 
-        docker run --volumes-from $OVPN_DATA -d -p 1194:1194/udp --privileged kylemanna/openvpn
+        docker run --volumes-from $OVPN_DATA -d -p 1194:1194/udp --privileged acactown/opvn:v2
 
 * Generate a client certificate without a passphrase
 
-        docker run --volumes-from $OVPN_DATA --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass
+        docker run --volumes-from $OVPN_DATA --rm -it acactown/opvn:v2 easyrsa build-client-full CLIENTNAME nopass
 
 * Retrieve the client configuration with embedded certificates
 
-        docker run --volumes-from $OVPN_DATA --rm kylemanna/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+        docker run --volumes-from $OVPN_DATA --rm acactown/opvn:v2 ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 
 
 ## How Does It Work?
 
-Initialize the volume container using the `kylemanna/openvpn` image with the
+Initialize the volume container using the `acactown/opvn:v2` image with the
 included scripts to automatically generate:
 
 - Diffie-Hellman parameters
@@ -44,11 +44,11 @@ declares that directory as a volume. It means that you can start another
 container with the `--volumes-from` flag, and access the configuration.
 The volume also holds the PKI keys and certs so that it could be backed up.
 
-To generate a client certificate, `kylemanna/openvpn` uses EasyRSA via the
+To generate a client certificate, `acactown/opvn:v2` uses EasyRSA via the
 `easyrsa` command in the container's path.  The `EASYRSA_*` environmental
 variables place the PKI CA under `/etc/opevpn/pki`.
 
-Conveniently, `kylemanna/openvpn` comes with a script called `ovpn_getclient`,
+Conveniently, `acactown/opvn:v2` comes with a script called `ovpn_getclient`,
 which dumps an inline OpenVPN client configuration file.  This single file can
 then be given to a client for access to the VPN.
 
