@@ -1,0 +1,21 @@
+{
+ "AWSEBDockerrunVersion": "1",
+ "Image":{
+ 	"Name":"acactown/docker-ovpn:latest"
+ },
+ "Authentication": {
+   "Bucket": "gitlab-docker",
+   "Key": ".dockerconfig"
+ },
+ "Volumes": [
+    {
+      "HostDirectory": "/etc/openvpn",
+      "ContainerDirectory": "/etc/openvpn"
+    }
+  ],
+ "Ports": [
+   {
+     "ContainerPort": "1194"
+   }
+ ]
+}

@@ -1,8 +1,10 @@
 #!/bin/bash
-
-#
-# Run the OpenVPN server normally
-#
+# **********************************************
+# **    Run the OpenVPN server normally       **
+# **        Date : 22/09/2014                 **
+# **        Autor: Andrés Amado               **
+# ** Forked from : jpetazzo/dockvpn           **
+# **********************************************
 
 set -ex
 

@@ -1,8 +1,10 @@
 #!/bin/bash
-
-#
-# Initialize the EasyRSA PKI
-#
+# **********************************************
+# **      Initialize the EasyRSA PKI          **
+# **        Date : 22/09/2014                 **
+# **        Autor: Andrés Amado               **
+# ** Forked from : jpetazzo/dockvpn           **
+# **********************************************
 
 set -ex
 
@@ -10,6 +12,16 @@ source "$OPENVPN/ovpn_env.sh"
 
 # Specify "nopass" as arg[2] to make the CA insecure (not recommended!)
 nopass=$1
+
+# Set UpPoints easy-rsa parameter settings
+cat >> "$EASYRSA_VARS_FILE" <<EOF
+set_var EASYRSA_REQ_COUNTRY  "BR"
+set_var EASYRSA_REQ_PROVINCE "SC"
+set_var EASYRSA_REQ_CITY     "Florianopolis"
+set_var EASYRSA_REQ_ORG      "UpPoints"
+set_var EASYRSA_REQ_EMAIL    "andres@uppoints.com"
+set_var EASYRSA_REQ_OU       "DevOps"
+EOF
 
 # Provides a sufficient warning before erasing pre-existing files
 easyrsa init-pki
@@ -22,15 +34,7 @@ easyrsa build-ca $nopass
 easyrsa gen-dh
 openvpn --genkey --secret $OPENVPN/pki/ta.key
 
-# Was nice to autoset, but probably a bad idea in practice, users should
-# have to explicitly specify the common name of their server
-#if [ -z "$cn"]; then
-#    #TODO: Handle IPv6 (when I get a VPS with IPv6)...
-#    ip4=$(dig +short myip.opendns.com @resolver1.opendns.com)
-#    ptr=$(dig +short -x $ip4 | sed -e 's:\.$::')
-#
-#    [ -n "$ptr" ] && cn=$ptr || cn=$ip4
-#fi
-
 # For a server key with a password, manually init; this is autopilot
 easyrsa build-server-full "$OVPN_CN" nopass
+
+echo "Successfully init EasyRSA PKI config"

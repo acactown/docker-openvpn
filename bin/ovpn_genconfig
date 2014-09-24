@@ -1,8 +1,10 @@
 #!/bin/bash
-
-#
-# Generate OpenVPN configs
-#
+# ********************************************
+# **     Generate OpenVPN configs           **
+# **        Date : 22/09/2014               **
+# **        Autor: Andrés Amado             **
+# ** Forked from : jpetazzo/dockvpn         **
+# ********************************************
 
 # Convert 1.2.3.4/24 -> 255.255.255.0
 cidr2mask()
@@ -46,7 +48,7 @@ usage() {
 set -ex
 
 OVPN_ENV=$OPENVPN/ovpn_env.sh
-OVPN_SERVER=192.168.255.0/24
+OVPN_SERVER=10.0.5.0/24
 OVPN_DEFROUTE=1
 OVPN_ROUTES=()
 OVPN_PUSH=()
@@ -106,7 +108,7 @@ fi
 # Apply defaults
 [ -z "$OVPN_PROTO" ] && OVPN_PROTO=udp
 [ -z "$OVPN_PORT" ] && OVPN_PORT=1194
-[ ${#OVPN_ROUTES[@]} -eq 0 ] && OVPN_ROUTES=("192.168.254.0/24")
+[ ${#OVPN_ROUTES[@]} -eq 0 ] && OVPN_ROUTES=("10.0.15.0/24")
 
 export OVPN_SERVER OVPN_ROUTES OVPN_DEFROUTE
 export OVPN_SERVER_URL OVPN_ENV OVPN_PROTO OVPN_CN OVPN_PORT
@@ -140,8 +142,8 @@ key-direction 0
 keepalive 10 60
 persist-key
 persist-tun
-push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
 
 proto $OVPN_PROTO
 # Rely on Docker to do port mapping, internally always 1194

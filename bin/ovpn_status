@@ -1,9 +1,11 @@
 #!/bin/sh
-
-#
-# Get OpenVPN server status
-#
+# **********************************************
+# **      Get OpenVPN server status           **
+# **        Date : 22/09/2014                 **
+# **        Autor: Andrés Amado               **
+# ** Forked from : jpetazzo/dockvpn           **
+# **********************************************
 
 set -ex
 
-tail -F /tmp/openvpn-status.log
+tail -f -n 100 /tmp/openvpn-status.log

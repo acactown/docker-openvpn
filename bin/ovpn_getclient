@@ -1,8 +1,10 @@
 #!/bin/bash
-
-#
-# Get an OpenVPN client configuration file
-#
+# **********************************************
+# ** Get an OpenVPN client configuration file **
+# **        Date : 22/09/2014                 **
+# **        Autor: Andrés Amado               **
+# ** Forked from : jpetazzo/dockvpn           **
+# **********************************************
 
 set -ex
 
@@ -45,3 +47,5 @@ EOF
 if [ "$OVPN_DEFROUTE" != "0" ];then
     echo "redirect-gateway def1"
 fi
+
+echo "Successfully generated  ${cn} config"
