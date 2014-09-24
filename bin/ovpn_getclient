@@ -47,5 +47,3 @@ EOF
 if [ "$OVPN_DEFROUTE" != "0" ];then
     echo "redirect-gateway def1"
 fi
-
-echo "Successfully generated  ${cn} config"
